@@ -1,0 +1,24 @@
+QPushButton#winBtn
+{
+
+    background:rgba(0,0,0,0);
+    border:rgba(0,0,0,0);
+}
+/*鼠标悬浮*/
+QPushButton#winBtn:hover
+{
+    background-color:#A8A8A8;
+    border:none;
+}
+
+/*按钮按下*/
+QPushButton#winBtn:pressed
+{
+    background-color:#f0f0f0;
+    border:none;
+}
+
+#titleLabel
+{
+    background-color:#1296DB;
+}
