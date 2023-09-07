@@ -5,6 +5,7 @@
     #include <Windowsx.h>
 #endif
 #include <QDebug>
+#include <QDesktopWidget>
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent,Qt::FramelessWindowHint | Qt::Window | Qt::WindowMinimizeButtonHint)
     , ui(new Ui::MainWindow)
@@ -17,6 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnMin,&QPushButton::clicked,this,&MainWindow::windowMin);
     connect(ui->btnMax,&QPushButton::clicked,this,&MainWindow::windowMax);
     connect(ui->btnClose,&QPushButton::clicked,this,&MainWindow::windowClose);
+
 }
 
 MainWindow::~MainWindow()
@@ -79,6 +81,12 @@ void MainWindow::mouseMoveEvent(QMouseEvent*event)
     if(isPressed) //如果鼠标左键按下
     {
         this->move(event->pos()-curPos+this->pos());    //窗口移动
+
+        if(isMaxWin)
+        {
+            windowMax();
+           // this->showMaximized();
+        }
     }
 }
 
@@ -107,12 +115,16 @@ void MainWindow::windowMax()
     {
         ui->btnMax->setIcon(QIcon(":/icons/normal.png"));
         this->showMaximized();
+        this->showFullScreen(); //fixed
+
     }
     else
     {
         ui->btnMax->setIcon(QIcon(":/icons/maxsize.png"));
         this->showNormal();
     }
+
+
 }
 
 //消息处理
