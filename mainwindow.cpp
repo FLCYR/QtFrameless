@@ -19,6 +19,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->btnMax,&QPushButton::clicked,this,&MainWindow::windowMax);
     connect(ui->btnClose,&QPushButton::clicked,this,&MainWindow::windowClose);
 
+    isPressed=false;
+    ui->titleWidget->setFixedHeight(46);    //固定标题栏高度
 }
 
 MainWindow::~MainWindow()
@@ -69,7 +71,8 @@ void MainWindow:: mouseDoubleClickEvent(QMouseEvent*event)
 
 void MainWindow::mousePressEvent(QMouseEvent*event)
 {
-    if(event->button()==Qt::LeftButton) //如果鼠标左键按下
+    if(event->button()==Qt::LeftButton
+            && ui->titleWidget->underMouse()) //如果鼠标左键处于标题栏并且按下
     {
         isPressed=true;
         curPos=event->pos();    //记录当前的点击坐标
@@ -136,49 +139,49 @@ bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *r
 
     switch (param->message)
     {
-    case WM_NCHITTEST:
-    {
-        int nX = GET_X_LPARAM(param->lParam) - this->geometry().x();
-        int nY = GET_Y_LPARAM(param->lParam) - this->geometry().y();
-
-
-        *result = HTCAPTION;
-
-        //判断鼠标位置是否位于窗口边界
-        if ((nX > 0) && (nX < m_nBorder))
-            *result = HTLEFT;
-
-        if ((nX > this->width() - m_nBorder) && (nX < this->width()))
-            *result = HTRIGHT;
-
-        if ((nY > 0) && (nY < m_nBorder))
-            *result = HTTOP;
-
-        if ((nY > this->height() - m_nBorder) && (nY < this->height()))
-            *result = HTBOTTOM;
-
-        if ((nX > 0) && (nX < m_nBorder) && (nY > 0)
-                && (nY < m_nBorder))
-            *result = HTTOPLEFT;
-
-        if ((nX > this->width() - m_nBorder) && (nX < this->width())
-                && (nY > 0) && (nY < m_nBorder))
-            *result = HTTOPRIGHT;
-
-        if ((nX > 0) && (nX < m_nBorder)
-                && (nY > this->height() - m_nBorder) && (nY < this->height()))
-            *result = HTBOTTOMLEFT;
-
-        if ((nX > this->width() - m_nBorder) && (nX < this->width())
-                && (nY > this->height() - m_nBorder) && (nY < this->height()))
-            *result = HTBOTTOMRIGHT;
-
-        if (*result == HTCAPTION)
+        case WM_NCHITTEST:
         {
-            return false;
+            int nX = GET_X_LPARAM(param->lParam) - this->geometry().x();
+            int nY = GET_Y_LPARAM(param->lParam) - this->geometry().y();
+
+
+            *result = HTCAPTION;
+
+            //判断鼠标位置是否位于窗口边界
+            if ((nX > 0) && (nX < m_nBorder))
+                *result = HTLEFT;
+
+            if ((nX > this->width() - m_nBorder) && (nX < this->width()))
+                *result = HTRIGHT;
+
+            if ((nY > 0) && (nY < m_nBorder))
+                *result = HTTOP;
+
+            if ((nY > this->height() - m_nBorder) && (nY < this->height()))
+                *result = HTBOTTOM;
+
+            if ((nX > 0) && (nX < m_nBorder) && (nY > 0)
+                    && (nY < m_nBorder))
+                *result = HTTOPLEFT;
+
+            if ((nX > this->width() - m_nBorder) && (nX < this->width())
+                    && (nY > 0) && (nY < m_nBorder))
+                *result = HTTOPRIGHT;
+
+            if ((nX > 0) && (nX < m_nBorder)
+                    && (nY > this->height() - m_nBorder) && (nY < this->height()))
+                *result = HTBOTTOMLEFT;
+
+            if ((nX > this->width() - m_nBorder) && (nX < this->width())
+                    && (nY > this->height() - m_nBorder) && (nY < this->height()))
+                *result = HTBOTTOMRIGHT;
+
+            if (*result == HTCAPTION)
+            {
+                return false;
+            }
+            return true;
         }
-        return true;
-    }
     }
     return QMainWindow::nativeEvent(eventType, message, result);
 }
