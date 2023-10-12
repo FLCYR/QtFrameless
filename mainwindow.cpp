@@ -7,7 +7,7 @@
 #include <QDebug>
 #include <QDesktopWidget>
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent,Qt::FramelessWindowHint | Qt::Window | Qt::WindowMinimizeButtonHint)
+    : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
 
@@ -21,6 +21,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     isPressed=false;
     ui->titleWidget->setFixedHeight(46);    //固定标题栏高度
+    ui->titleWidget->move(0,0);
+
 }
 
 MainWindow::~MainWindow()
@@ -133,7 +135,7 @@ void MainWindow::windowMax()
 //消息处理
 bool MainWindow::nativeEvent(const QByteArray &eventType, void *message, long *result)
 {
-    int m_nBorder = 5;  //边界宽度
+    int m_nBorder = 5;  //设置一个边界宽度用于判断是否处于边界
     Q_UNUSED(eventType)
     MSG *param = static_cast<MSG *>(message);
 
